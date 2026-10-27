@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Fonts
+Name[es]=Fuentes
+Comment=Preview, install and manage fonts
+Comment[es]=Ver, instalar y gestionar tipografías
+Exec=bookos-fonts %F
+Icon=bookos-fonts
+Type=Application
+Terminal=false
+Categories=Utility;
+MimeType=font/ttf;font/otf;font/collection;application/x-font-ttf;application/x-font-otf;application/vnd.ms-opentype;
+StartupNotify=true
+StartupWMClass=bookos-fonts

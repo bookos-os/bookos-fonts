@@ -1,0 +1,22 @@
+[package]
+name = "bookos-fonts"
+version = "0.1.0"
+description = "Fuentes de BookOS: ver, instalar y gestionar tipografías"
+edition = "2024"
+
+[dependencies]
+# Copia de Glass-HQ/gpui en 650aab5 con parches/gpui-linux.patch: ese fork no compila
+# en Linux desde que separó las plataformas en crates (marzo de 2026).
+gpui = { path = "vendor/gpui/crates/gpui", default-features = false, features = ["font-kit", "wayland"] }
+gpui_platform = { path = "vendor/gpui/crates/gpui_platform", features = ["wayland"] }
+anyhow = "1"
+# Ya la trae GPUI (cosmic-text la usa): leer la tabla `name` y el `cmap` de una
+# fuente no añade nada al árbol de dependencias.
+ttf-parser = "0.25"
+
+[profile.release]
+lto = true
+codegen-units = 1
+strip = true
+opt-level = 3
+panic = "abort"

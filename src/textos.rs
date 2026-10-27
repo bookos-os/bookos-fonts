@@ -1,0 +1,235 @@
+//! Textos de la interfaz. Castellano por defecto; inglés como traducción.
+//!
+//! `{}` y `{n}` se sustituyen al usarlos. Una tabla de `&'static str` en vez de
+//! un sistema de traducción: son dos idiomas fijos y así una clave que falte
+//! no compila.
+
+pub struct Textos {
+    pub app: &'static str,
+    pub buscar: &'static str,
+    pub pestana_todas: &'static str,
+    pub pestana_mias: &'static str,
+    pub pestana_sistema: &'static str,
+    pub estilos_uno: &'static str,
+    pub estilos_n: &'static str,
+    pub origen_usuario: &'static str,
+    pub origen_sistema: &'static str,
+    pub origen_archivo: &'static str,
+    pub desactivada: &'static str,
+    pub monoespaciada: &'static str,
+    pub instalar_fuentes: &'static str,
+    pub sin_resultados: &'static str,
+    pub vacio_mias: &'static str,
+    pub vacio: &'static str,
+    pub muestra: &'static str,
+    pub muestra_pista: &'static str,
+    pub tamano: &'static str,
+    pub sin_latin: &'static str,
+    pub seccion_estilos: &'static str,
+    pub seccion_caracteres: &'static str,
+    pub seccion_info: &'static str,
+    pub seccion_gestion: &'static str,
+    pub info_estilo: &'static str,
+    pub info_formato: &'static str,
+    pub info_version: &'static str,
+    pub info_disenador: &'static str,
+    pub info_fabricante: &'static str,
+    pub info_glifos: &'static str,
+    pub info_ejes: &'static str,
+    pub info_tamano: &'static str,
+    pub info_archivo: &'static str,
+    pub info_copyright: &'static str,
+    pub info_licencia: &'static str,
+    pub activada: &'static str,
+    pub activada_sub: &'static str,
+    pub protegida_sub: &'static str,
+    pub mostrar_en_archivos: &'static str,
+    pub eliminar: &'static str,
+    pub eliminar_sub: &'static str,
+    pub instalar: &'static str,
+    pub instalando: &'static str,
+    pub archivos_n: &'static str,
+    pub cancelar: &'static str,
+    pub reintentar: &'static str,
+    pub dialogo_eliminar_titulo: &'static str,
+    pub dialogo_eliminar_texto: &'static str,
+    pub toast_eliminada: &'static str,
+    pub err_no_es_fuente: &'static str,
+    pub err_ya_instalada: &'static str,
+    pub err_papelera: &'static str,
+    pub err_herramienta: &'static str,
+    pub err_disco: &'static str,
+    pub err_explorador: &'static str,
+    pub pesos: [&'static str; 9],
+    pub cursiva: &'static str,
+}
+
+impl Textos {
+    pub fn del_sistema() -> &'static Textos {
+        let idioma = ["LC_ALL", "LC_MESSAGES", "LANG"]
+            .iter()
+            .filter_map(|v| std::env::var(v).ok())
+            .find(|v| !v.is_empty())
+            .unwrap_or_default();
+        if idioma.starts_with("es") || idioma.is_empty() {
+            &ES
+        } else {
+            &EN
+        }
+    }
+
+    pub fn estilos(&self, n: usize) -> String {
+        if n == 1 {
+            self.estilos_uno.to_string()
+        } else {
+            self.estilos_n.replace("{n}", &n.to_string())
+        }
+    }
+
+    /// «Negrita», «Semilight»…: el nombre de un peso CSS redondeado a la
+    /// centena más cercana.
+    pub fn peso(&self, peso: f32) -> &'static str {
+        let i = ((peso / 100.).round() as usize).clamp(1, 9) - 1;
+        self.pesos[i]
+    }
+}
+
+pub static ES: Textos = Textos {
+    app: "Fuentes",
+    buscar: "Buscar",
+    pestana_todas: "Todas",
+    pestana_mias: "Mías",
+    pestana_sistema: "Sistema",
+    estilos_uno: "1 estilo",
+    estilos_n: "{n} estilos",
+    origen_usuario: "Instalada por ti",
+    origen_sistema: "Del sistema",
+    origen_archivo: "Sin instalar",
+    desactivada: "Desactivada",
+    monoespaciada: "Monoespaciada",
+    instalar_fuentes: "Instalar fuentes…",
+    sin_resultados: "Ninguna fuente se llama así.",
+    vacio_mias: "Aún no has instalado ninguna fuente. Suelta archivos TTF u OTF en la ventana o usa «Instalar fuentes…».",
+    vacio: "Elige una familia de la lista.",
+    muestra: "El veloz murciélago hindú comía feliz cardillo y kiwi.",
+    muestra_pista: "Escribe un texto de muestra",
+    tamano: "Tamaño",
+    sin_latin: "Esta fuente no tiene letras latinas y la vista previa no la puede dibujar. Se puede instalar y usar igualmente.",
+    seccion_estilos: "Estilos",
+    seccion_caracteres: "Caracteres",
+    seccion_info: "Información",
+    seccion_gestion: "Gestión",
+    info_estilo: "Estilo",
+    info_formato: "Formato",
+    info_version: "Versión",
+    info_disenador: "Diseño",
+    info_fabricante: "Fabricante",
+    info_glifos: "Glifos",
+    info_ejes: "Ejes variables",
+    info_tamano: "Tamaño del archivo",
+    info_archivo: "Archivo",
+    info_copyright: "Copyright",
+    info_licencia: "Licencia",
+    activada: "Activada",
+    activada_sub: "Para las apps al abrirse de nuevo. El panel y el dock no cambian.",
+    protegida_sub: "Es la letra por defecto del sistema y no se puede desactivar.",
+    mostrar_en_archivos: "Mostrar en Archivos",
+    eliminar: "Eliminar",
+    eliminar_sub: "Los archivos van a la papelera.",
+    instalar: "Instalar",
+    instalando: "Instalando…",
+    archivos_n: "{n} archivos",
+    cancelar: "Cancelar",
+    reintentar: "Reintentar",
+    dialogo_eliminar_titulo: "¿Eliminar «{}»?",
+    dialogo_eliminar_texto: "Sus archivos irán a la papelera. Las apps que la estén usando la conservarán hasta que se cierren.",
+    toast_eliminada: "«{}» está en la papelera",
+    err_no_es_fuente: "«{}» no es una fuente que se pueda instalar (TTF, OTF, TTC u OTC).",
+    err_ya_instalada: "Ya hay una fuente instalada con el nombre «{}».",
+    err_papelera: "No se pudo mover a la papelera: {}.",
+    err_herramienta: "Falló {orden}: {}",
+    err_disco: "No se pudo escribir en el disco: {}",
+    err_explorador: "No se pudo abrir Archivos: {}",
+    pesos: [
+        "Fina",
+        "Extraligera",
+        "Ligera",
+        "Normal",
+        "Media",
+        "Seminegrita",
+        "Negrita",
+        "Extranegrita",
+        "Negra",
+    ],
+    cursiva: "Cursiva",
+};
+
+pub static EN: Textos = Textos {
+    app: "Fonts",
+    buscar: "Search",
+    pestana_todas: "All",
+    pestana_mias: "Mine",
+    pestana_sistema: "System",
+    estilos_uno: "1 style",
+    estilos_n: "{n} styles",
+    origen_usuario: "Installed by you",
+    origen_sistema: "System",
+    origen_archivo: "Not installed",
+    desactivada: "Disabled",
+    monoespaciada: "Monospaced",
+    instalar_fuentes: "Install fonts…",
+    sin_resultados: "No font has that name.",
+    vacio_mias: "You haven't installed any fonts yet. Drop TTF or OTF files on the window or use “Install fonts…”.",
+    vacio: "Pick a family from the list.",
+    muestra: "The quick brown fox jumps over the lazy dog.",
+    muestra_pista: "Type some sample text",
+    tamano: "Size",
+    sin_latin: "This font has no Latin letters and the preview can't draw it. It can still be installed and used.",
+    seccion_estilos: "Styles",
+    seccion_caracteres: "Characters",
+    seccion_info: "Information",
+    seccion_gestion: "Manage",
+    info_estilo: "Style",
+    info_formato: "Format",
+    info_version: "Version",
+    info_disenador: "Design",
+    info_fabricante: "Manufacturer",
+    info_glifos: "Glyphs",
+    info_ejes: "Variable axes",
+    info_tamano: "File size",
+    info_archivo: "File",
+    info_copyright: "Copyright",
+    info_licencia: "License",
+    activada: "Enabled",
+    activada_sub: "For apps the next time they open. The panel and dock don't change.",
+    protegida_sub: "It's the system's default font and can't be disabled.",
+    mostrar_en_archivos: "Show in Files",
+    eliminar: "Delete",
+    eliminar_sub: "The files go to the trash.",
+    instalar: "Install",
+    instalando: "Installing…",
+    archivos_n: "{n} files",
+    cancelar: "Cancel",
+    reintentar: "Retry",
+    dialogo_eliminar_titulo: "Delete “{}”?",
+    dialogo_eliminar_texto: "Its files will go to the trash. Apps using it keep it until they're closed.",
+    toast_eliminada: "“{}” is in the trash",
+    err_no_es_fuente: "“{}” isn't a font that can be installed (TTF, OTF, TTC or OTC).",
+    err_ya_instalada: "A font named “{}” is already installed.",
+    err_papelera: "Couldn't move it to the trash: {}.",
+    err_herramienta: "{orden} failed: {}",
+    err_disco: "Couldn't write to disk: {}",
+    err_explorador: "Couldn't open Files: {}",
+    pesos: [
+        "Thin",
+        "Extra Light",
+        "Light",
+        "Regular",
+        "Medium",
+        "Semibold",
+        "Bold",
+        "Extra Bold",
+        "Black",
+    ],
+    cursiva: "Italic",
+};
